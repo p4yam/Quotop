@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhiteGray"
+    android:orientation="vertical"
+    tools:context="ir.kivee.quotop.QuoteActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhiteGray"
+        android:layoutDirection="rtl">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_check" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:id="@+id/activity_quote_copy_text"
+            android:src="@drawable/ic_content_copy" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/activity_quote_quote_container"
+        android:background="@drawable/def_back">
+
+        <TextView
+            android:id="@+id/activity_quote_quote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:lineSpacingExtra="10dp"
+            android:paddingLeft="23dp"
+            android:paddingRight="23dp"
+            android:textColor="@color/colorWhiteGray"
+            android:textSize="23sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_quote_quote"
+            android:layout_margin="20dp"
+            android:textColor="@color/colorWhiteGray"
+            android:textSize="18sp"
+            android:id="@+id/activity_quote_author"/>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="64dp"
+           android:visibility="gone"
+           android:id="@+id/activity_quote_frame"
+           android:layout_alignParentBottom="true"
+           android:background="#99fefefe"/>
+    </RelativeLayout>
+
+    <include layout="@layout/layout_bottom_bar"/>
+
+</LinearLayout>
