@@ -1,7 +1,5 @@
 package ir.kivee.quotop;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -23,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ir.kivee.quotop.utils.CapturePhotoUtils;
 import ir.kivee.quotop.utils.ColorsFragment;
 import ir.kivee.quotop.utils.FontSizeFragment;
 
@@ -35,6 +34,8 @@ public class QuoteActivity extends AppCompatActivity implements View.OnTouchList
     private ImageView fontStyle;
     private FrameLayout bottomFrame;
     private ImageView imgCopyText;
+    private ImageView imgSaveImage;
+
 
     private static RelativeLayout rlImageContainer;
     private static TextView txtQuote;
@@ -93,15 +94,30 @@ public class QuoteActivity extends AppCompatActivity implements View.OnTouchList
             }
         });
 
+        imgSaveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomFrame.setVisibility(View.GONE);
+                rlImageContainer.setDrawingCacheEnabled(true);
+                Bitmap imageToSave = Bitmap.createBitmap(rlImageContainer.getDrawingCache());
+                rlImageContainer.setDrawingCacheEnabled(false);
+                String res = CapturePhotoUtils.insertImage(getContentResolver(), imageToSave,
+                        "QuoTop", "image created by quotop app");
+                if (res != null)
+                    Toast.makeText(getApplication(), "Image saved to gallery",
+                            Toast.LENGTH_SHORT)
+                            .show();
+            }
+        });
+
         imgCopyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String fullQuote = quoteInfo.get(1) + " " + quoteInfo.get(2);
-                ClipData data = ClipData.newPlainText("quote", fullQuote);
-                ClipboardManager manager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                manager.setPrimaryClip(data);
-                Toast.makeText(getApplication(),
-                        "Quote text copied to clipboard", Toast.LENGTH_SHORT).show();
+                String fullQuote = quoteInfo.get(1) + " -" + quoteInfo.get(2);
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("*/*");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, fullQuote);
+                startActivity(Intent.createChooser(sharingIntent, "select app ..."));
             }
         });
 
@@ -117,6 +133,7 @@ public class QuoteActivity extends AppCompatActivity implements View.OnTouchList
         fontStyle = findViewById(R.id.font_style);
         rlImageContainer = findViewById(R.id.activity_quote_quote_container);
         imgCopyText = findViewById(R.id.activity_quote_copy_text);
+        imgSaveImage = findViewById(R.id.activity_quote_save_image);
 
         Typeface typeQuote = Typeface.createFromAsset
                 (getAssets(), "fonts/biko.otf");
